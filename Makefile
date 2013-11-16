@@ -42,7 +42,7 @@ test.coverage.preview: test.coverage
 
 test.coverage.coveralls: test.coverage
 	@sed -i.bak \
-		"s/^.*polvo-html\/lib/SF:lib/g" \
+		"s/^.*the-router\/lib/SF:lib/g" \
 		coverage/lcov.info
 
 	@cat coverage/lcov.info | $(COVERALLS)

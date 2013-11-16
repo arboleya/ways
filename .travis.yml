@@ -1,0 +1,5 @@
+---
+language: node_js
+node_js: 0.1
+
+script: make test.coverage.coveralls

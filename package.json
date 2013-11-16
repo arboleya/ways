@@ -1,0 +1,36 @@
+{
+  "name": "the-router",
+  "version": "0.1.0",
+  "author": "Anderson Arboleya <anderson@arboleya.me>",
+  "description": "Simple Router with flow-based navigation mechanism",
+  "keywords":[
+    "router",
+    "navigation",
+    "flow"
+  ],
+  "main": "lib/router.js",
+  "scripts": {
+    "test": "make test"
+  },
+  "directories": {
+    "src": "src"
+  },
+  "repository": {
+    "type": "git",
+    "url": "http://github.com/theoricus/the-router"
+  },
+  "engines": {
+    "node": ">= 0.10"
+  },
+  "dependencies": {
+    "lodash": "2.3.x"
+  },
+  "devDependencies": {
+    "coffee-script": "1.6.x",
+    "chai": "1.8.x",
+    "mocha": "1.14.x",
+    "version": "0.1.x",
+    "istanbul": "0.1.x",
+    "coveralls": "2.3.x"
+  }
+}

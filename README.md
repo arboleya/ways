@@ -4,7 +4,9 @@ Router for [Theoricus](https://github.com/theoricus/theoricus) framework.
 
 [![Stories in Ready](https://badge.waffle.io/theoricus/the-router.png)](http://waffle.io/theoricus/the-router)  
 
-[![Build Status](https://travis-ci.org/theoricus/the-router.png?branch=master)](https://travis-ci.org/theoricus/the-router) [![Coverage Status](https://coveralls.io/repos/theoricus/the-router/badge.png)](https://coveralls.io/r/theoricus/the-router) [![Dependency Status](https://gemnasium.com/theoricus/the-router.png)](https://gemnasium.com/theoricus/the-router)
+[![Build Status](https://travis-ci.org/theoricus/the-router.png?branch=master)](https://travis-ci.org/theoricus/the-router) [![Coverage Status](https://coveralls.io/repos/theoricus/the-router/badge.png)](https://coveralls.io/r/theoricus/the-router)
+
+[![Dependency Status](https://gemnasium.com/theoricus/the-router.png)](https://gemnasium.com/theoricus/the-router) [![NPM version](https://badge.fury.io/js/the-router.png)](http://badge.fury.io/js/the-router)
 
 ## Usage Drafts
 

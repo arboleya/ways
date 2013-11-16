@@ -103,7 +103,7 @@ Now lets assume that `/c` depends on `/b` that depends on `/a`.
 
 So when we call `/c`, we really want to execute:
   1. First `/a`
-  1. Then `/b`rn], [runner], [des
+  1. Then `/b`
   1. And finally `/c`
 
 #### Signature changes
@@ -121,7 +121,7 @@ The `.get` method accepts more arguments as well, lets take a look at both.
 # router = new Router 'render+destroy'
 router = new Router 'destroy+render'
 
-# router.get [pattetroyer], [dependency]
+# router.get [pattern], [runner], [destroyer], [dependency]
 router.get '/', Pages.base, Pages.destroy
 router.get '/pages/:id', Pages.show, Pages.destroy, '/'
 router.get '/pages/:id/edit', Pages.edit, Pages.destroy, '/pages/:id'

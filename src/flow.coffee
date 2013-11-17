@@ -1,6 +1,10 @@
-_ = require 'lodash'
-
 Fluid = require './fluid'
+
+find = (arr, filter)->
+  return item for item in arr when filter item
+
+reject = (arr, filter)->
+  item for item in arr when not filter item
 
 module.exports = class Flow
 
@@ -36,14 +40,14 @@ module.exports = class Flow
   _find_dependency:( parent )->
 
     # 1 - searching in active fluids
-    fluid = _.find @actives, (f)->
+    fluid = find @actives, (f)->
       return f.url is parent.dependency
 
     if fluid?
       return fluid
 
     # 2 - searching in router's routes
-    route = _.find @router.routes, (r)->
+    route = find @router.routes, (r)->
       r.matcher.test parent.route.dependency
 
     if route?
@@ -68,7 +72,7 @@ module.exports = class Flow
 
   filter_deads:->
     for fluid in @actives
-      is_pending = _.find @pendings, (f)-> f.url is fluid.url
+      is_pending = find @pendings, (f)-> f.url is fluid.url
       @deads.push fluid if not is_pending
 
 
@@ -77,7 +81,7 @@ module.exports = class Flow
       return done()
 
     fluid = @pendings.shift()
-    is_active = _.find @actives, (f)-> f.url is fluid.url
+    is_active = find @actives, (f)-> f.url is fluid.url
 
     # skips already active routes
     return @run_pendings url, done if is_active
@@ -91,5 +95,5 @@ module.exports = class Flow
       return done()
 
     fluid = @deads.pop()
-    @actives = _.reject @actives, (f)-> f.url is fluid.url
+    @actives = reject @actives, (f)-> f.url is fluid.url
     fluid.destroy => @destroy_deads done

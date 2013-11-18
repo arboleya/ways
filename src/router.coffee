@@ -1,7 +1,7 @@
 Route = require './route'
 Flow = require './flow'
 
-module.exports = class Router
+class Router
 
   mode: null
   flow: null
@@ -32,3 +32,10 @@ module.exports = class Router
       route.run url
 
     return route
+
+if module?.exports?
+  module.exports = Router
+else if define?.amd?
+  define -> Router
+else
+  window.TheRouter = Router

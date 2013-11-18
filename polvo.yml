@@ -1,0 +1,7 @@
+input:
+  - ./src
+
+output:
+  js: ./lib/the-router.js
+
+boot: ./src/router

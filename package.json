@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "author": "Anderson Arboleya <anderson@arboleya.me>",
   "description": "Simple Router with flow-based navigation mechanism",
-  "keywords":[
+  "keywords": [
     "router",
     "navigation",
     "flow"
@@ -29,6 +29,7 @@
     "mocha": "1.14.x",
     "mversion": "0.2.x",
     "istanbul": "0.1.x",
-    "coveralls": "2.3.x"
+    "coveralls": "2.3.x",
+    "polvo": "~0.5.7"
   }
 }

@@ -12,15 +12,20 @@ class Router extends Event
 
   constructor:( @mode )->
     @routes = []
-    @flow = new Flow @ if @mode?
+    if @mode?
+      @flow = new Flow @
+      @flow.on 'run:pending', ( url )=> @emit 'url:change'
 
   use:( Middleware )->
+    return if @middleware?
     @middleware = new Middleware
+    @middleware.on 'url:change', => @route @middleware.get_url()
 
   init:->
     if @middleware?
-      @middleware.on 'url:change', => @route @middleware.get_location()
-      @route @middleware.get_location()
+      url = @middleware.get_url()
+      if url?
+        @middleware.push_state url
 
   get:(pattern, run, destroy, dependency)->
     route = new Route pattern, run, destroy, dependency
@@ -31,32 +36,23 @@ class Router extends Event
     url = '/' + url.replace /^[\/]+|[\/]+$/m, ''
     for route in @routes
       if route.matcher.test url
-        return @run route, url
+        if @flow?
+          @flow.run url, route
+        else
+          @emit 'url:change', url
+          route.run url
+        return route
 
     throw new Error "Route not found for url '#{url}'"
 
-  run:( route, url )->
-    if @mode?
-      @flow.run url, route
-    else
-      route.run url
-
-    @emit 'url:change', url
-    return route
-
-  redirect:( url, title, state, silent )->
+  push:( url, title, state)->
     if @middleware?
-      if silent
-        @middleware.replaceState url, title, state
-      else
-        @middleware.pushState url, title, state
+      @middleware.push_state url, title, state
     else
       @route url
 
+  replace:( url, title, state, silent )->
+    if @middleware?
+      @middleware.replace_state url, title, state
 
-if module?.exports?
-  module.exports = Router
-else if define?.amd?
-  define -> Router
-else
-  window.TheRouter = Router
+module.exports = Router

@@ -8,12 +8,12 @@
     "navigation",
     "flow"
   ],
-  "main": "lib/router.js",
+  "main": "./lib",
   "scripts": {
     "test": "make test"
   },
   "directories": {
-    "src": "src"
+    "src": "./src"
   },
   "repository": {
     "type": "git",

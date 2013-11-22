@@ -54,6 +54,12 @@ router.get '/pages/:id?', listener
 router.get '/pages/:id?/tags/*tags?', listener
 ````
 
+### Methods
+
+  - `get_url()` - returns current url (only works with a middleware)
+  - `init( url )` - initializes router with the given url
+  - `push(url, title, state)` - changes url emiting events
+  - `replace(url, title, state)` - changes url without emiting events
 
 ### Default mode
 
@@ -71,12 +77,12 @@ router.get '/pages/:id', (req)->
   console.log 'pattern =', req.pattern
   console.log 'params =', req.params
 
-router.route '/'
+router.push '/'
 # Will output:
 #   url = /
 #   pattern = /
 
-router.route '/pages/33'
+router.push '/pages/33'
 # Will output:
 #   url = /pages/33
 #   pattern = /pages/:id
@@ -169,7 +175,7 @@ Ok, now lets start our navigation:
 ##### Step 1
 
 ````coffeescript
-router.route '/pages/33/edit'
+router.push '/pages/33/edit'
 ````
 
 This will produce the following output:
@@ -186,7 +192,7 @@ This will produce the following output:
 ##### Step 2
 
 ````coffeescript
-router.route '/pages/22/edit'
+router.push '/pages/22/edit'
 ````
 
 This will produce the following output:
@@ -206,7 +212,7 @@ This will produce the following output:
 ##### Step 3
 
 ````coffeescript
-router.route '/any/route/here'
+router.push '/any/route/here'
 ````
 
 This will produce the following output:
@@ -221,6 +227,28 @@ This will produce the following output:
 
 > As the route in question here has no dependencies, note that every other route needs to
 > be destroyed before it runs.
+
+# Middlewares
+
+This router alone doesn't implement any HTML5 History or Hash support for use
+with browsers, instead there's an API for connecting any middleware your want.
+
+# Usage
+
+````coffeescript
+Router = require 'the-router'
+Middleware = require 'the-router-browser'
+
+router = new Router
+router.use Middleware
+
+router.get [...]
+````
+
+Official middlewares:
+ 
+ - http://github.com/theoricus/the-router-browser
+ - http://github.com/theoricus/the-router-node
 
 
 # License

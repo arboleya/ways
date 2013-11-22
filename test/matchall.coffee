@@ -1,4 +1,4 @@
-Router = require '../lib/router'
+Router = require '../lib'
 should = require('chai').should()
 
 describe '[match-all]', ->
@@ -36,4 +36,4 @@ describe '[match-all]', ->
         out.log = null
         done()
 
-    router.route '/anything'
+    router.push '/anything'

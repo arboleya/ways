@@ -1,4 +1,4 @@
-Router = require '../lib/router'
+Router = require '../lib'
 should = require('chai').should()
 
 describe '[no-flow-mode]', ->
@@ -37,7 +37,10 @@ describe '[no-flow-mode]', ->
         out.log = null
         done()
 
-    router.route '/pages/33/edit'
-    router.route '/pages'
-    router.route '/pages/33'
-    router.route '/'
+    # replace shouldn't do anything
+    router.replace '/pages/33/edit'
+
+    router.push '/pages/33/edit'
+    router.push '/pages'
+    router.push '/pages/33'
+    router.push '/'

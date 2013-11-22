@@ -1,4 +1,4 @@
-Router = require '../lib/router'
+Router = require '../lib'
 should = require('chai').should()
 
 describe '[flow-mode] destroy+render', ->
@@ -41,7 +41,7 @@ describe '[flow-mode] destroy+render', ->
         out.log = null
         done()
 
-    router.route '/pages/33/edit'
+    router.push '/pages/33/edit'
 
 
 
@@ -66,14 +66,14 @@ describe '[flow-mode] destroy+render', ->
         out.log = null
         done()
 
-    router.route '/pages/22/edit'
+    router.push '/pages/22/edit'
 
 
 
   it 'should error on route not found', ->
     msg = "Route not found for url '/this/route/does/not/exist'"
     try
-      router.route '/this/route/does/not/exist'
+      router.push '/this/route/does/not/exist'
     catch err
       err.message.should.equal msg
 
@@ -82,6 +82,6 @@ describe '[flow-mode] destroy+render', ->
   it 'should error on dependency not found', ->
     msg = "Dependency '/this/does/not/exist' not found for route '/no/dep'"
     try
-      router.route '/no/dep'
+      router.push '/no/dep'
     catch err
       err.message.should.equal msg

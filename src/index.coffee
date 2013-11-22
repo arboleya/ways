@@ -21,29 +21,35 @@ class Router extends Event
     @middleware = new Middleware
     @middleware.on 'url:change', => @route @middleware.get_url()
 
-  init:->
-    if @middleware?
-      url = @middleware.get_url()
-      if url?
-        @middleware.push_state url
+  init:( url )->
+    if url?
+      @route url
 
   get:(pattern, run, destroy, dependency)->
     route = new Route pattern, run, destroy, dependency
     @routes.push route
     return route
 
+  get_url:->
+    if @middleware?
+      return @middleware.get_url()
+
   route:( url )->
     url = '/' + url.replace /^[\/]+|[\/]+$/m, ''
     for route in @routes
       if route.matcher.test url
-        if @flow?
-          @flow.run url, route
-        else
-          @emit 'url:change', url
-          route.run url
-        return route
+        return @run url, route
 
     throw new Error "Route not found for url '#{url}'"
+
+  run:( url, route )->
+    if @flow?
+      @flow.run url, route
+    else
+      @emit 'url:change', url
+      route.run url
+
+    return route
 
   push:( url, title, state)->
     if @middleware?

@@ -1,3 +1,4 @@
+Event = require 'the-event'
 Fluid = require './fluid'
 
 find = (arr, filter)->
@@ -6,7 +7,7 @@ find = (arr, filter)->
 reject = (arr, filter)->
   item for item in arr when not filter item
 
-module.exports = class Flow
+module.exports = class Flow extends Event
 
   router: null
 
@@ -21,20 +22,23 @@ module.exports = class Flow
 
 
   run:(url, route)->
+    @emit 'run:url', route
+
     fluid = new Fluid route, url
 
     @filter_pendings fluid
     @filter_deads()
 
+    @emit 'status:busy'
     if @router.mode is 'render+destroy'
       @run_pendings url, =>
         @destroy_deads =>
-          # console.log '>>> status = free (render+destroy)'
+          @emit 'status:free', @router.mode
 
     if @router.mode is 'destroy+render'
       @destroy_deads =>
         @run_pendings url, =>
-          # console.log '>>> status = free (destroy+render)'
+          @emit 'status:free', @router.mode
 
 
   _find_dependency:( parent )->
@@ -84,10 +88,12 @@ module.exports = class Flow
     is_active = find @actives, (f)-> f.url is fluid.url
 
     # skips already active routes
-    return @run_pendings url, done if is_active
+    if is_active
+      return @run_pendings url, done
 
     # or run new ones
     @actives.push fluid
+    @emit 'run:pending', url
     fluid.run url, => @run_pendings url, done
 
   destroy_deads:( done )->

@@ -59,6 +59,10 @@ describe '[middlewares]', ->
     router.replace '/pages/33/edit'
 
     router.push '/pages/33/edit'
+
+    should.exist router.get_url()
+    router.get_url().should.equal '/pages/33/edit'
+
     router.push '/pages'
     router.push '/pages/33'
     router.push '/'
@@ -94,8 +98,7 @@ describe '[middlewares]', ->
         out.log = null
         done()
 
-    router.middleware.url = '/pages/33/edit'
-    router.init()
+    router.init '/pages/33/edit'
 
     router.push '/pages'
     router.push '/pages/33'

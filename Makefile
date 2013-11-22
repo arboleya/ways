@@ -8,16 +8,13 @@ MOCHA=node_modules/mocha/bin/mocha
 _MOCHA=node_modules/mocha/bin/_mocha
 COVERALLS=node_modules/coveralls/bin/coveralls.js
 
-POLVO=node_modules/polvo/bin/polvo
-
 setup:
 	@npm install
 
 
 
 build:
-	$(CS) -bco lib src
-	$(POLVO) -r
+	@$(CS) -bco lib src
 
 
 

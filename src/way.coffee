@@ -1,4 +1,4 @@
-module.exports = class Route
+module.exports = class Way
 
   pattern: null
   runner: null

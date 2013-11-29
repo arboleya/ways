@@ -1,4 +1,5 @@
-Event = require 'the-event'
+Event = require 'happens'
+
 Fluid = require './fluid'
 
 find = (arr, filter)->

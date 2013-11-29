@@ -1,5 +1,5 @@
-Router = require '../lib'
-Event = require 'the-event'
+Router = require '../lib/ways'
+Event = require 'happens'
 
 should = require('chai').should()
 

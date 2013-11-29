@@ -1,9 +1,9 @@
-Event = require 'the-event'
+Event = require 'happens'
 
-Route = require './route'
+Way = require './way'
 Flow = require './flow'
 
-class Router extends Event
+class Ways extends Event
 
   mode: null
   flow: null
@@ -26,7 +26,7 @@ class Router extends Event
       @route url
 
   get:(pattern, run, destroy, dependency)->
-    route = new Route pattern, run, destroy, dependency
+    route = new Way pattern, run, destroy, dependency
     @routes.push route
     return route
 
@@ -61,4 +61,4 @@ class Router extends Event
     if @middleware?
       @middleware.replace_state url, title, state
 
-module.exports = Router
+module.exports = Ways

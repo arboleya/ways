@@ -1,14 +1,14 @@
 {
-  "name": "the-router",
+  "name": "ways",
   "version": "0.1.0",
   "author": "Anderson Arboleya <anderson@arboleya.me>",
-  "description": "Simple Router with flow-based navigation mechanism",
+  "description": "Micro router with flow-based navigation mechanism and middlewares support",
   "keywords": [
     "router",
     "navigation",
     "flow"
   ],
-  "main": "./lib",
+  "main": "./lib/ways",
   "scripts": {
     "test": "make test"
   },
@@ -17,13 +17,13 @@
   },
   "repository": {
     "type": "git",
-    "url": "http://github.com/theoricus/the-router"
+    "url": "http://github.com/serpentem/ways"
   },
   "engines": {
     "node": ">= 0.10"
   },
   "dependencies": {
-    "the-event": "0.3.x"
+    "happens": "0.3.x"
   },
   "devDependencies": {
     "coffee-script": "1.6.x",

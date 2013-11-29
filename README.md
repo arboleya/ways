@@ -1,18 +1,18 @@
-# The Router
+# Ways
 
-Router for [Theoricus](https://github.com/theoricus/theoricus) framework.
+Micro router with flow-based navigation mechanism and middlewares support.
 
-[![Stories in Ready](https://badge.waffle.io/theoricus/the-router.png)](http://waffle.io/theoricus/the-router)  
+[![Stories in Ready](https://badge.waffle.io/serpentem/ways.png)](http://waffle.io/serpentem/ways)  
 
-[![Build Status](https://travis-ci.org/theoricus/the-router.png?branch=master)](https://travis-ci.org/theoricus/the-router) [![Coverage Status](https://coveralls.io/repos/theoricus/the-router/badge.png)](https://coveralls.io/r/theoricus/the-router)
+[![Build Status](https://travis-ci.org/serpentem/ways.png?branch=master)](https://travis-ci.org/serpentem/ways) [![Coverage Status](https://coveralls.io/repos/serpentem/ways/badge.png)](https://coveralls.io/r/serpentem/ways)
 
-[![Dependency Status](https://gemnasium.com/theoricus/the-router.png)](https://gemnasium.com/theoricus/the-router) [![NPM version](https://badge.fury.io/js/the-router.png)](http://badge.fury.io/js/the-router)
+[![Dependency Status](https://gemnasium.com/serpentem/ways.png)](https://gemnasium.com/serpentem/ways) [![NPM version](https://badge.fury.io/js/ways.png)](http://badge.fury.io/js/ways)
 
 ## Usage Drafts
 
 Simple draft demonstrating how this should work.
 
-> Attention, is a **WIP**! Do not use it yet.
+> Attention, it's a **WIP**! Do not use it yet.
 
 ### Main concept
 
@@ -147,7 +147,7 @@ Both will receive two params when called:
 Lets take a look at a full example:
 
 ````coffeescript
-Router = require '../../the-router/src/router'
+Router = require 'ways'
 
 render = (req, done)->
   console.log "+ RENDER url='#{req.url}', " +
@@ -236,19 +236,20 @@ with browsers, instead there's an API for connecting any middleware your want.
 # Usage
 
 ````coffeescript
-Router = require 'the-router'
-Middleware = require 'the-router-browser'
+Router = require 'ways'
+Middleware = require 'ways-middleware-browser'
 
 router = new Router
 router.use Middleware
 
 router.get [...]
+router.push router.pathname()
 ````
 
 Official middlewares:
  
- - http://github.com/theoricus/the-router-browser
- - http://github.com/theoricus/the-router-node
+ - http://github.com/serpentem/ways-browser
+ - http://github.com/serpentem/ways-node
 
 
 # License

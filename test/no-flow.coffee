@@ -1,4 +1,4 @@
-Router = require '../lib'
+Router = require '../lib/ways'
 should = require('chai').should()
 
 describe '[no-flow-mode]', ->

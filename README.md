@@ -25,39 +25,38 @@ The router is build to work in two modes:
 
 Simple route:
 
-````coffeescript
-router.get '/pages', listener
+````javascript
+router.get('/pages', listener);
 ````
 
 Route with named params:
 
-````coffeescript
-router.get '/pages/:id', listener
+````javascript
+router.get('/pages/:id', listener);
 ````
 
 Route with splat params:
 
-````coffeescript
-router.get '/pages/:id/tags/*tags', listener
+````javascript
+router.get('/pages/:id/tags/*tags', listener);
 ````
 
 Match-all:
 
-````coffeescript
-router.get '*', listener
+````javascript
+router.get('*', listener);
 ````
 
 Optional params:
 
-````coffeescript
-router.get '/pages/:id?', listener
-router.get '/pages/:id?/tags/*tags?', listener
+````javascript
+router.get('/pages/:id?', listener);
+router.get('/pages/:id?/tags/*tags?', listener);
 ````
 
 ### Methods
 
-  - `get_url()` - returns current url (only works with a middleware)
-  - `init( url )` - initializes router with the given url
+  - `pathname()` - returns current pathname (only works with a middleware)
   - `push(url, title, state)` - changes url emiting events
   - `replace(url, title, state)` - changes url without emiting events
 
@@ -65,32 +64,37 @@ router.get '/pages/:id?/tags/*tags?', listener
 
 This mode is pretty straightforward, no tricks, just simple routing.
 
-````coffeescript
-router = new Router
+````javascript
+var router = new Router;
 
-router.get '/', (req)->
-  console.log 'url =', req.url
-  console.log 'pattern =', req.pattern
+router.get('/', function(req) {
+  console.log('url =', req.url);
+  console.log('pattern =', req.pattern);
+});
 
-router.get '/pages/:id', (req)->
-  console.log 'url =', req.url
-  console.log 'pattern =', req.pattern
-  console.log 'params =', req.params
+router.get('/pages/:id', function(req) {
+  console.log('url =', req.url);
+  console.log('pattern =', req.pattern);
+  console.log('params =', req.params);
+});
 
-router.push '/'
-# Will output:
-#   url = /
-#   pattern = /
+router.push('/');
 
-router.push '/pages/33'
-# Will output:
-#   url = /pages/33
-#   pattern = /pages/:id
-#   params = Object { id: 33 }
+// Will output:
+//   url = /
+//   pattern = /
+
+
+router.push('/pages/33');
+
+// Will output:
+//   url = /pages/33
+//   pattern = /pages/:id
+//   params = Object { id: 33 }
 ````
 
-````coffeescript
-router.get '/pages/:id/tags/*tags?'
+````javascript
+router.get('/pages/:id/tags/*tags?');
 ````
 
 ### Flow mode
@@ -101,10 +105,10 @@ dependency graph between them.
 
 Lets say you have three routes:
 
-````coffeescript
-router.get '/a', (req)->
-router.get '/b', (req)->
-router.get '/c', (req)->
+````javascript
+router.get('/a', function (req) { /* ... */ });
+router.get('/b', function (req) { /* ... */ });
+router.get('/c', function (req) { /* ... */ });
 ````
 
 Now lets assume that `/c` depends on `/b` that depends on `/a`.
@@ -124,15 +128,18 @@ The `.get` method accepts more arguments as well, lets take a look at both.
 
 
 
-````coffeescript
-# router = new Router [flow-mode]
-# router = new Router 'render+destroy'
-router = new Router 'destroy+render'
+````javascript
+// var router = new Router([flow-mode]);
+// var router = new Router('render+destroy');
 
-# router.get [pattern], [runner], [destroyer], [dependency]
-router.get '/', Pages.base, Pages.destroy
-router.get '/pages/:id', Pages.show, Pages.destroy, '/'
-router.get '/pages/:id/edit', Pages.edit, Pages.destroy, '/pages/:id'
+var router = new Router('destroy+render');
+var Pages = new PagesController; // or something
+
+// router.get([pattern], [runner], [destroyer], [dependency]);
+
+router.get('/', Pages.base, Pages.destroy);
+router.get('/pages/:id', Pages.show, Pages.destroy, '/');
+router.get('/pages/:id/edit', Pages.edit, Pages.destroy, '/pages/:id');
 ````
 
 Note that now we've passed two listeners among the `.get` call (`runner` and
@@ -146,36 +153,42 @@ Both will receive two params when called:
 
 Lets take a look at a full example:
 
-````coffeescript
-Router = require 'ways'
+````javascript
+var Router = require('ways');
 
-render = (req, done)->
-  console.log "+ RENDER url='#{req.url}', " +
-              "pattern='#{req.pattern}', " +
-              'params=', req.params
-  done()
+var render = function(req, done) {
+  console.log(
+    '+ RENDER url=' + req.url +', ' +
+    'pattern=' + req.pattern +', ' +
+    'params=', req.params
+  );
+  done();
+};
 
-destroy = (req, done)->
-  console.log "- DESTROY url='#{req.url}', " +
-              "pattern='#{req.pattern}', " +
-              'params=', req.params
-  done()
+var destroy = function(req, done) {
+  console.log(
+    '- DESTROY url='+ req.url +', ' +
+    'pattern=' + req.pattern +', ' +
+    'params=', req.params
+  );
+  done();
+};
 
-router = new Router 'destroy+render'
+var router = new Router('destroy+render');
 
-router.get '/', render, destroy
-router.get '/pages', render, destroy, '/'
-router.get '/pages/:id', render, destroy, '/pages'
-router.get '/pages/:id/edit', render, destroy, '/pages/:id'
-router.get '*', render, destroy
+router.get('/', render, destroy);
+router.get('/pages', render, destroy, '/');
+router.get('/pages/:id', render, destroy, '/pages');
+router.get('/pages/:id/edit', render, destroy, '/pages/:id');
+router.get('*', render, destroy);
 ````
 
 Ok, now lets start our navigation:
 
 ##### Step 1
 
-````coffeescript
-router.push '/pages/33/edit'
+````javascript
+router.push('/pages/33/edit');
 ````
 
 This will produce the following output:
@@ -191,8 +204,8 @@ This will produce the following output:
 
 ##### Step 2
 
-````coffeescript
-router.push '/pages/22/edit'
+````javascript
+router.push('/pages/22/edit');
 ````
 
 This will produce the following output:
@@ -211,8 +224,8 @@ This will produce the following output:
 
 ##### Step 3
 
-````coffeescript
-router.push '/any/route/here'
+````javascript
+router.push('/any/route/here');
 ````
 
 This will produce the following output:
@@ -235,15 +248,15 @@ with browsers, instead there's an API for connecting any middleware your want.
 
 # Usage
 
-````coffeescript
-Router = require 'ways'
-Middleware = require 'ways-middleware-browser'
+````javascript
+Router = require('ways');
+Middleware = require('ways-browser');
 
-router = new Router
-router.use Middleware
+var router = new Router;
+router.use(Middleware);
 
-router.get [...]
-router.push router.pathname()
+router.get(/* […] */);
+router.push(router.pathname());
 ````
 
 Official middlewares:

@@ -1,3 +1,8 @@
+0.2.1 / 2013-11-30
+===================
+ * Fixing middlewares integration
+ * Normalizing API
+
 0.2.0 / 2013-11-29
 ===================
  * Implementing middlewares support

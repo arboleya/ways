@@ -9,12 +9,12 @@ class Middleware extends Event
   state: null
   title: null
 
-  get_url:-> @url
+  pathname:-> @url
 
-  push_state:( @url, @title, @state )->
+  push:( @url, @title, @state )->
     @emit 'url:change'
 
-  replace_state:( @url, @title, @state )->
+  replace:( @url, @title, @state )->
     
 
 
@@ -39,8 +39,6 @@ describe '[middlewares]', ->
     router.get '/pages/:id/edit', render
     router.get '/no/dep', render
 
-    router.init()
-
     requests =  [
       {url: '/pages/33/edit', pattern: '/pages/:id/edit', params: {id:'33'}}
       {url: '/pages', pattern: '/pages', params: {}}
@@ -60,8 +58,8 @@ describe '[middlewares]', ->
 
     router.push '/pages/33/edit'
 
-    should.exist router.get_url()
-    router.get_url().should.equal '/pages/33/edit'
+    should.exist router.pathname()
+    router.pathname().should.equal '/pages/33/edit'
 
     router.push '/pages'
     router.push '/pages/33'
@@ -98,8 +96,7 @@ describe '[middlewares]', ->
         out.log = null
         done()
 
-    router.init '/pages/33/edit'
-
+    router.push '/pages/33/edit'
     router.push '/pages'
     router.push '/pages/33'
     router.push '/'

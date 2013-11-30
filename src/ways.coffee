@@ -14,35 +14,33 @@ class Ways extends Event
     @routes = []
     if @mode?
       @flow = new Flow @
-      @flow.on 'run:pending', ( url )=> @emit 'url:change'
+      @flow.on 'runner:pending', ( url )=> @emit 'url:change'
 
   use:( Middleware )->
     return if @middleware?
     @middleware = new Middleware
-    @middleware.on 'url:change', => @route @middleware.get_url()
+    @middleware.on 'url:change', => @_route @middleware.pathname()
 
-  init:( url )->
-    if url?
-      @route url
 
-  get:(pattern, run, destroy, dependency)->
-    route = new Way pattern, run, destroy, dependency
+  get:(pattern, runner, destroyer, dependency)->
+    route = new Way pattern, runner, destroyer, dependency
     @routes.push route
     return route
 
-  get_url:->
-    if @middleware?
-      return @middleware.get_url()
+  pathname:->
+    @middleware?.pathname()
 
-  route:( url )->
+
+
+  _route:( url )->
     url = '/' + url.replace /^[\/]+|[\/]+$/m, ''
     for route in @routes
       if route.matcher.test url
-        return @run url, route
+        return @_run url, route
 
     throw new Error "Route not found for url '#{url}'"
 
-  run:( url, route )->
+  _run:( url, route )->
     if @flow?
       @flow.run url, route
     else
@@ -51,14 +49,15 @@ class Ways extends Event
 
     return route
 
+
   push:( url, title, state)->
     if @middleware?
-      @middleware.push_state url, title, state
+      @middleware.push url, title, state
     else
-      @route url
+      @_route url
 
   replace:( url, title, state, silent )->
     if @middleware?
-      @middleware.replace_state url, title, state
+      @middleware.replace url, title, state
 
 module.exports = Ways

@@ -1,3 +1,7 @@
+0.2.2 / 2013-11-30
+===================
+ * Handling flows' interruptions
+
 0.2.1 / 2013-11-30
 ===================
  * Fixing middlewares integration

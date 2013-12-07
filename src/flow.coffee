@@ -2,6 +2,8 @@ Event = require 'happens'
 
 Fluid = require './fluid'
 
+debug = require('debug')('ways:flow')
+
 find = (arr, filter)->
   return item for item in arr when filter item
 
@@ -17,6 +19,7 @@ module.exports = class Flow extends Event
   pendings: null
 
   constructor:( @router )->
+    debug 'new'
     @deads = []
     @actives = []
     @pendings = []
@@ -24,6 +27,7 @@ module.exports = class Flow extends Event
 
   run:(url, route)->
     @emit 'run:url', route
+    debug 'run', url
 
     fluid = new Fluid route, url
 

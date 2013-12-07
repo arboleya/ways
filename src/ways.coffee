@@ -14,7 +14,6 @@ class Ways extends Event
     @routes = []
     if @mode?
       @flow = new Flow @
-      @flow.on 'runner:pending', ( url )=> @emit 'url:change'
 
   use:( Middleware )->
     return if @middleware?

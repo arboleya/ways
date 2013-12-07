@@ -10,4 +10,5 @@ module.exports = class Fluid
     @req = @route.run @url, done
 
   destroy:(done)->
-    @route.destroy @req, done
+    if @req?
+      @route.destroy @req, done

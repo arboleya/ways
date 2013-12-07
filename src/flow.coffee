@@ -26,8 +26,9 @@ module.exports = class Flow extends Event
 
 
   run:(url, route)->
-    @emit 'run:url', route
     debug 'run', url
+    @deads = []
+    @pendings = []
 
     fluid = new Fluid route, url
 

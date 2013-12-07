@@ -32,7 +32,7 @@ class Ways extends Event
 
 
   _route:( url )->
-    url = '/' + url.replace /^[\/]+|[\/]+$/m, ''
+    url = '/' + url.replace /^[\/]+|[\/]+$/mg, ''
     for route in @routes
       if route.matcher.test url
         return @_run url, route

@@ -2,34 +2,34 @@ var ways = require('../lib/ways'),
     happens = require('happens'),
     should = require('chai').should();
 
-function Middleware() {
+function Adapter() {
   happens.mixin(this);
 }
 
-Middleware.prototype.url = null;
-Middleware.prototype.state = null;
-Middleware.prototype.title = null;
+Adapter.prototype.url = null;
+Adapter.prototype.state = null;
+Adapter.prototype.title = null;
 
-Middleware.prototype.pathname = function() {
+Adapter.prototype.pathname = function() {
   return this.url;
 };
 
-Middleware.prototype.push = function(url, title, state) {
+Adapter.prototype.push = function(url, title, state) {
   this.url = url;
   this.title = title;
   this.state = state;
   this.emit('url:change');
 };
 
-Middleware.prototype.replace = function(url, title, state) {
+Adapter.prototype.replace = function(url, title, state) {
   this.url = url;
   this.title = title;
   this.state = state;
 };
 
 
-describe('[middlewares]', function() {
-  it('should make proper use of middlewares', function(done) {
+describe('[adapters]', function() {
+  it('should make proper use of adapters', function(done) {
     
     var out = {
       log: function(type, req) {
@@ -47,7 +47,7 @@ describe('[middlewares]', function() {
     };
 
     ways.reset();
-    ways.use(Middleware);
+    ways.use(Adapter);
     
     ways('/', run);
     ways('/pages', run);

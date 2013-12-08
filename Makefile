@@ -12,19 +12,10 @@ setup:
 
 
 test:
-	@$(MOCHA) --compilers coffee:coffee-script \
-		--ui bdd \
-		--reporter spec \
-		--recursive \
-		test
+	@$(MOCHA)
 
 test.coverage:
-	@$(ISTANBUL) cover $(_MOCHA) -- \
-		--compilers coffee:coffee-script \
-		--ui bdd \
-		--reporter spec \
-		--recursive \
-		test
+	@$(ISTANBUL) cover $(_MOCHA)
 
 test.coverage.preview: test.coverage
 	@cd coverage/lcov-report && python -m SimpleHTTPServer 8080

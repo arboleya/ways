@@ -26,7 +26,6 @@
     "happens": "0.3.x"
   },
   "devDependencies": {
-    "coffee-script": "1.6.x",
     "chai": "1.8.x",
     "mocha": "1.14.x",
     "mversion": "0.2.x",

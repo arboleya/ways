@@ -1,0 +1,77 @@
+var ways = require('../lib/ways'),
+    happens = require('happens'),
+    should = require('chai').should();
+
+function Middleware() {
+  happens.mixin(this);
+}
+
+Middleware.prototype.url = null;
+Middleware.prototype.state = null;
+Middleware.prototype.title = null;
+
+Middleware.prototype.pathname = function() {
+  return this.url;
+};
+
+Middleware.prototype.push = function(url, title, state) {
+  this.url = url;
+  this.title = title;
+  this.state = state;
+  this.emit('url:change');
+};
+
+Middleware.prototype.replace = function(url, title, state) {
+  this.url = url;
+  this.title = title;
+  this.state = state;
+};
+
+
+describe('[middlewares]', function() {
+  it('should make proper use of middlewares', function(done) {
+    
+    var out = {
+      log: function(type, req) {
+        type.should.equal('run');
+        req.should.deep.equal(requests.shift());
+        if (requests.length === 0) {
+          out.log = null;
+          done();
+        }
+      }
+    };
+
+    var run = function(req) {
+      out.log('run', req);
+    };
+
+    ways.reset();
+    ways.use(Middleware);
+    
+    ways('/', run);
+    ways('/pages', run);
+    ways('/pages/:id', run);
+    ways('/pages/:id/edit', run);
+    ways('/no/dep', run);
+    
+    requests = [
+      {url: '/pages/33/edit', pattern: '/pages/:id/edit', params: {id: '33'}},
+      {url: '/pages', pattern: '/pages', params: {}},
+      {url: '/pages/33', pattern: '/pages/:id', params: {id: '33'}},
+      {url: '/', pattern: '/', params: {}}
+    ];
+
+    ways.go.silent('/pages/33/edit');
+    ways.go('/pages/33/edit');
+
+    should.exist(ways.pathname());
+    ways.pathname().should.equal('/pages/33/edit');
+
+    ways.go('/pages');
+    ways.go('/pages/33');
+
+    ways.go('/');
+  });
+
+});

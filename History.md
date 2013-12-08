@@ -1,3 +1,8 @@
+0.3.0 / 2013-12-08
+===================
+ * Removing coffeescript dependency and porting everything to javascript
+ * Make the API more fluent
+
 0.2.3 / 2013-12-08
 ===================
  * Normalizing urls

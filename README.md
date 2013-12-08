@@ -1,114 +1,99 @@
 # Ways
 
-Micro router with flow-based navigation mechanism and middlewares support.
+Micro router with [flow-based](#flow-mode) navigation mechanism and adapters support.
 
-[![Stories in Ready](https://badge.waffle.io/serpentem/ways.png)](http://waffle.io/serpentem/ways)  
+[![Build Status](https://travis-ci.org/serpentem/ways.png?branch=master)](https://travis-ci.org/serpentem/ways)
+[![Coverage Status](https://coveralls.io/repos/serpentem/ways/badge.png)](https://coveralls.io/r/serpentem/ways)
+[![Dependency Status](https://gemnasium.com/serpentem/ways.png)](https://gemnasium.com/serpentem/ways)
+[![NPM version](https://badge.fury.io/js/ways.png)](http://badge.fury.io/js/ways)
 
-[![Build Status](https://travis-ci.org/serpentem/ways.png?branch=master)](https://travis-ci.org/serpentem/ways) [![Coverage Status](https://coveralls.io/repos/serpentem/ways/badge.png)](https://coveralls.io/r/serpentem/ways)
+## Installation
 
-[![Dependency Status](https://gemnasium.com/serpentem/ways.png)](https://gemnasium.com/serpentem/ways) [![NPM version](https://badge.fury.io/js/ways.png)](http://badge.fury.io/js/ways)
-
-## Usage Drafts
-
-Simple draft demonstrating how this should work.
-
-> Attention, it's a **WIP**! Do not use it yet.
-
-### Main concept
-
-The router is build to work in two modes:
- 1. Default - has no tricks
- 1. Flow - introduces a flow-based navigation mechanism with interconected
- routes
-
-### Routes & Arguments
-
-Simple route:
-
-````javascript
-router.get('/pages', listener);
+````
+npm install ways --save-dev
 ````
 
-Route with named params:
+## Adapters
+
+This router alone doesn't implement HTML5 History or Hash support, for browsers.
+
+Instead you may use adapters to expand it.
+
+ * http://github.com/serpentem/ways-browser
 
 ````javascript
-router.get('/pages/:id', listener);
+var ways = require('ways');
+var browser = require('ways-browser');
+
+ways.use(browser);
+ways('/my/route', function(req){ /* ... */ });
 ````
 
-Route with splat params:
+## Basics
+Basic signature is `ways(pattern, handler)`.
 
 ````javascript
-router.get('/pages/:id/tags/*tags', listener);
-````
+var ways = require('ways');
 
-Match-all:
-
-````javascript
-router.get('*', listener);
-````
-
-Optional params:
-
-````javascript
-router.get('/pages/:id?', listener);
-router.get('/pages/:id?/tags/*tags?', listener);
-````
-
-### Methods
-
-  - `pathname()` - returns current pathname (only works with a middleware)
-  - `push(url, title, state)` - changes url emiting events
-  - `replace(url, title, state)` - changes url without emiting events
-
-### Default mode
-
-This mode is pretty straightforward, no tricks, just simple routing.
-
-````javascript
-var router = new Router;
-
-router.get('/', function(req) {
-  console.log('url =', req.url);
-  console.log('pattern =', req.pattern);
+// simple route
+ways('/pages', function(req){
+  // req.pattern, req.url, req.params
 });
 
-router.get('/pages/:id', function(req) {
-  console.log('url =', req.url);
-  console.log('pattern =', req.pattern);
-  console.log('params =', req.params);
-});
+// named params
+ways('/pages/:id', handler);
 
-router.push('/');
+// splat params
+ways('/pages/:id/tags/*tags', handler);
 
-// Will output:
-//   url = /
-//   pattern = /
+// optional params
+ways('/pages/:id?', handler);
+ways('/pages/:id?/tags/*tags?', handler);
 
-
-router.push('/pages/33');
-
-// Will output:
-//   url = /pages/33
-//   pattern = /pages/:id
-//   params = Object { id: 33 }
+// match-all
+ways('*', handler);
 ````
 
-````javascript
-router.get('/pages/:id/tags/*tags?');
+### Go
+
+Redirects app.
+```javascript
+// ways.go(url, [title, [state]]);
+ways.go('/pages');
+ways.go('/pages', 'Page Title');
+ways.go('/pages', 'Page Title', {foo: 'bar'});
 ````
 
-### Flow mode
+### Go Silent
+Same as `ways.go`, but in silent mode, without triggering any route.
 
-Specially built for single page applications with *complex presentation layer*
-in mind, in `flow` mode you can connect your routes altogheter, creating a
-dependency graph between them.
+```javascript
+// ways.go.silent(url, [title, [state]]);
+ways.go.silent('/pages');
+ways.go.silent('/pages', 'Page Title');
+ways.go.silent('/pages', 'Page Title', {foo: 'bar'});
+````
+> Think about `go() = pushState`, `go.silent() = replaceState`
+
+### Pathname
+
+Gets current pathname.
+
+```javascript
+// window.pathname()
+ways.go(ways.pathname());
+````
+ 
+## Flow mode
+
+Connect your routes altogheter, creating a dependency graph between them.
 
 Lets say you have three routes:
 
 ````javascript
-router.get('/a', function (req) { /* ... */ });
-router.get('/b', function (req) { /* ... */ });
-router.get('/c', function (req) { /* ... */ });
+ways('/page/', function (req) { /* ... */ });
+ways('/page/sidebar', function (req) { /* ... */ });
+ways('/page/', function (req) { /* ... */ });
 ````
 
 Now lets assume that `/c` depends on `/b` that depends on `/a`.
@@ -118,94 +103,97 @@ So when we call `/c`, we really want to execute:
   1. Then `/b`
   1. And finally `/c`
 
-#### Signature changes
+That's what flow based mode do.
 
-In `flow` mode the `constructor` should receive a transitional mode, tha can be
-`destroy+render` or `render+destroy`. This will tell the order that things
-should run.
+### Activation
 
-The `.get` method accepts more arguments as well, lets take a look at both.
+The passed mode tell the order things should run.
 
+```javascript
+// ways.mode(mode);
+ways.mode('destroy+run'); // destroy first, run after
+ways.mode('run+destroy'); // run before, destroy after
+````
+
+### Signature changes
+
+In `flow`, the routes can be run or destroyed and signature changes a little.
+  
+You must pass two handlers instead of one, a `runner` and a `destroyer`.
+
+You may also pass a `dependency`.
 
 
 ````javascript
-// var router = new Router([flow-mode]);
-// var router = new Router('render+destroy');
+// ways(pattern, run, destroy, [dependency])
 
-var router = new Router('destroy+render');
-var Pages = new PagesController; // or something
+var ways = require('ways');
+var pages = require('./pages');
 
-// router.get([pattern], [runner], [destroyer], [dependency]);
+ways('/', pages.base, pages.destroy);
 
-router.get('/', Pages.base, Pages.destroy);
-router.get('/pages/:id', Pages.show, Pages.destroy, '/');
-router.get('/pages/:id/edit', Pages.edit, Pages.destroy, '/pages/:id');
+// 'pages/:id' depends on '/'
+ways('/pages/:id', pages.show, pages.destroy, '/');
+
+// '/pages/:id/edit' depends on '/pages/:id'
+ways('/pages/:id/edit', pages.edit, pages.destroy, '/pages/:id');
 ````
 
-Note that now we've passed two listeners among the `.get` call (`runner` and
-`destroyer`).
+Both handlers (`run` and `destroy`) will receive two params when called:
 
-Both will receive two params when called:
 - `req` - infos about the request
 - `done`- callback to be called when route finishes running or destroying
 
-#### Example
+### Example
 
 Lets take a look at a full example:
 
 ````javascript
-var Router = require('ways');
+var ways = require('ways');
 
-var render = function(req, done) {
-  console.log(
-    '+ RENDER url=' + req.url +', ' +
-    'pattern=' + req.pattern +', ' +
-    'params=', req.params
-  );
+var running = '+ RUN url=%s, pattern=%s, params='
+var destroying = '- DESTROY url=%s, pattern=%s, params='
+
+var run = function(req, done) {
+  console.log(running, req.url, req.pattern, req.params);
   done();
 };
 
 var destroy = function(req, done) {
-  console.log(
-    '- DESTROY url='+ req.url +', ' +
-    'pattern=' + req.pattern +', ' +
-    'params=', req.params
-  );
+  console.log(destroying, req.url, req.pattern, req.params);
   done();
 };
 
-var router = new Router('destroy+render');
-
-router.get('/', render, destroy);
-router.get('/pages', render, destroy, '/');
-router.get('/pages/:id', render, destroy, '/pages');
-router.get('/pages/:id/edit', render, destroy, '/pages/:id');
-router.get('*', render, destroy);
+ways('/', run, destroy);
+ways('/pages', run, destroy, '/');
+ways('/pages/:id', run, destroy, '/pages');
+ways('/pages/:id/edit', run, destroy, '/pages/:id');
+ways('*', run, destroy);
 ````
 
 Ok, now lets start our navigation:
 
-##### Step 1
+#### Step 1
 
 ````javascript
-router.push('/pages/33/edit');
+ways.go('/pages/33/edit');
 ````
 
 This will produce the following output:
 
 ````
-+ RENDER url='/', pattern='/', params= Object {}
-+ RENDER url='/pages', pattern='/pages', params= Object {}
-+ RENDER url='/pages/33', pattern='/pages/:id', params= Object {id: "33"}
-+ RENDER url='/pages/33/edit', pattern='/pages/:id/edit', params= Object {id: "33"} 
++ RUN url='/', pattern='/', params= Object {}
++ RUN url='/pages', pattern='/pages', params= Object {}
++ RUN url='/pages/33', pattern='/pages/:id', params= Object {id: "33"}
++ RUN url='/pages/33/edit', pattern='/pages/:id/edit', params= Object {id: "33"} 
 ````
 > At the beggining there's no route to be destroyed, so the dependency chain is
 > computed and every route gets executed
 
-##### Step 2
+#### Step 2
 
 ````javascript
-router.push('/pages/22/edit');
+ways.go('/pages/22/edit');
 ````
 
 This will produce the following output:
@@ -213,57 +201,57 @@ This will produce the following output:
 ````
 - DESTROY url='/pages/33/edit', pattern='/pages/:id/edit', params= Object {id: "33"}
 - DESTROY url='/pages/33', pattern='/pages/:id', params= Object {id: "33"}
-+ RENDER url='/pages/22', pattern='/pages/:id', params= Object {id: "22"}
-+ RENDER url='/pages/22/edit', pattern='/pages/:id/edit', params= Object {id: "22"}
++ RUN url='/pages/22', pattern='/pages/:id', params= Object {id: "22"}
++ RUN url='/pages/22/edit', pattern='/pages/:id/edit', params= Object {id: "22"}
 ````
 
-> Here we have two routes being destroyed before running the new ones, this is computed
-> again based on the dependency chain. In this case, uesless routes are `destroyed` before
-> running the new ones, this order can be changed passing the mode `destroy+render` to the
-> router constructor.
+> Here we have two routes being destroyed before running the new ones, this is
+> computed again based on the dependency chain. In this case, useless routes are
+> `destroyed` before running the new ones, this order can be changed passing the
+> mode `destroy+run`.
 
-##### Step 3
+#### Step 3
 
 ````javascript
-router.push('/any/route/here');
+ways.go('/any/route/here');
 ````
 
 This will produce the following output:
 
 ````
-- DESTROY url='/pages/22/edit', pattern='/pages/:id/edit', params= Object {id: "22"} flow.coffee:10
-- DESTROY url='/pages/22', pattern='/pages/:id', params= Object {id: "22"} flow.coffee:10
-- DESTROY url='/pages', pattern='/pages', params= Object {} flow.coffee:10
-- DESTROY url='/', pattern='/', params= Object {} flow.coffee:10
-+ RENDER url='/any/thing/here', pattern='*', params= Object {} 
+- DESTROY url='/pages/22/edit', pattern='/pages/:id/edit', params= Object {id: "22"}
+- DESTROY url='/pages/22', pattern='/pages/:id', params= Object {id: "22"}
+- DESTROY url='/pages', pattern='/pages', params= Object {}
+- DESTROY url='/', pattern='/', params= Object {}
++ RUN url='/any/thing/here', pattern='*', params= Object {} 
 ````
 
-> As the route in question here has no dependencies, note that every other route needs to
-> be destroyed before it runs.
+> As the route in question here has no dependencies, note that every other route
+> needs to be destroyed before it runs.
 
-# Middlewares
 
-This router alone doesn't implement any HTML5 History or Hash support for use
-with browsers, instead there's an API for connecting any middleware your want.
+### Restricted urls
 
-# Usage
+A simple way to have restricted urls would be like:
 
 ````javascript
-Router = require('ways');
-Middleware = require('ways-browser');
+function auth(){
+  // your logic here
+  return true;
+}
+function restrict(next) {
+  return function(req, done) {
+    auth(function(authorized) {
+      if(!authorized)
+        ways.go('/login');
+      else
+        next(req, done);
+    });
+  }
+}
 
-var router = new Router;
-router.use(Middleware);
-
-router.get(/* […] */);
-router.push(router.pathname());
+ways('/pages/secret', restrict(pages.secret), pages.destroy)
 ````
-
-Official middlewares:
- 
- - http://github.com/serpentem/ways-browser
- - http://github.com/serpentem/ways-node
-
 
 # License
 
@@ -289,4 +277,3 @@ IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
 CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 [![Bitdeli Badge](https://d2weczhvl823v0.cloudfront.net/serpentem/ways/trend.png)](https://bitdeli.com/free "Bitdeli Badge")
-

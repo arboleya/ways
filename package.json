@@ -1,8 +1,8 @@
 {
   "name": "ways",
-  "version": "0.2.3",
+  "version": "0.3.0",
   "author": "Anderson Arboleya <anderson@arboleya.me>",
-  "description": "Micro router with flow-based navigation mechanism and middlewares support",
+  "description": "Micro router with flow-based navigation mechanism and addapters support",
   "keywords": [
     "router",
     "navigation",

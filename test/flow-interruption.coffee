@@ -1,35 +1,33 @@
-Router = require '../lib/ways'
+ways = require '../lib/ways'
 should = require('chai').should()
 
-describe '[flow-interruption] destroy+render', ->
+describe '[flow-interruption] destroy+run', ->
 
   out = null
-  router = null
-
-  render = null
+  run = null
   destroy = null
 
   before ->
     out = {}
 
-    render = (req, done)->
-      out?.log 'render', req
+    run = (req, done)->
+      out?.log 'run', req
       if req.url is '/pages'
-        router.push '/login'
+        ways.go '/login'
       done()
 
     destroy = (req, done)->
       out?.log 'destroy', req
       done()
 
-  it 'should interrupt a running flow and starts another (render+destroy)', (done)->
+  it 'should interrupt a running flow and starts another (run+destroy)', (done)->
 
-
-    router = new Router 'destroy+render'
-    router.get '/', render, destroy
-    router.get '/pages', render, destroy, '/'
-    router.get '/pages/:id', render, destroy, '/pages'
-    router.get '/login', render, destroy
+    ways.reset()
+    ways.mode 'destroy+run'
+    ways '/', run, destroy
+    ways '/pages', run, destroy, '/'
+    ways '/pages/:id', run, destroy, '/pages'
+    ways '/login', run, destroy
 
     requests =  [
       {url: '/', pattern: '/', params: {}}
@@ -38,7 +36,7 @@ describe '[flow-interruption] destroy+render', ->
     ]
 
     out.log = (type, req)->
-      type.should.equal 'render'
+      type.should.equal 'run'
       req.should.deep.equal requests.shift()
       if requests.length is 0
         out.log = null
@@ -48,17 +46,17 @@ describe '[flow-interruption] destroy+render', ->
           done()
         , 500
 
-    router.push '/pages/33'
+    ways.go '/pages/33'
 
 
-  it 'should interrupt a running flow and starts another (destroy+render)', (done)->
+  it 'should interrupt a running flow and starts another (destroy+run)', (done)->
 
-    router = new Router 'render+destroy'
-    router.get '/', render, destroy
-    router.get '/pages', render, destroy, '/'
-    router.get '/pages/:id', render, destroy, '/pages'
-    router.get '/auth', render, destroy
-    router.get '/login', render, destroy, '/auth'
+    ways.mode 'run+destroy'
+    ways '/', run, destroy
+    ways '/pages', run, destroy, '/'
+    ways '/pages/:id', run, destroy, '/pages'
+    ways '/auth', run, destroy
+    ways '/login', run, destroy, '/auth'
 
     requests =  [
       {url: '/', pattern: '/', params: {}}
@@ -68,7 +66,7 @@ describe '[flow-interruption] destroy+render', ->
     ]
 
     out.log = (type, req)->
-      type.should.equal 'render'
+      type.should.equal 'run'
       req.should.deep.equal requests.shift()
       if requests.length is 0
         out.log = null
@@ -78,4 +76,4 @@ describe '[flow-interruption] destroy+render', ->
           done()
         , 500
 
-    router.push '/pages/33'
+    ways.go '/pages/33'

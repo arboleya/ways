@@ -1,5 +1,3 @@
-CS=node_modules/coffee-script/bin/coffee
-
 MVERSION=node_modules/mversion/bin/version
 VERSION=`$(MVERSION) | sed -E 's/\* package.json: //g'`
 
@@ -13,19 +11,14 @@ setup:
 
 
 
-build:
-	@$(CS) -bco lib src
-
-
-
-test: build
+test:
 	@$(MOCHA) --compilers coffee:coffee-script \
 		--ui bdd \
 		--reporter spec \
 		--recursive \
 		test
 
-test.coverage: build
+test.coverage:
 	@$(ISTANBUL) cover $(_MOCHA) -- \
 		--compilers coffee:coffee-script \
 		--ui bdd \
@@ -35,13 +28,6 @@ test.coverage: build
 
 test.coverage.preview: test.coverage
 	@cd coverage/lcov-report && python -m SimpleHTTPServer 8080
-
-test.coverage.coveralls: test.coverage
-	@sed -i.bak \
-		"s/^.*the-router\/lib/SF:lib/g" \
-		coverage/lcov.info
-
-	@cat coverage/lcov.info | $(COVERALLS)
 
 
 
@@ -69,3 +55,5 @@ re-publish:
 	git push origin $(VERSION)
 	git push origin master -f
 	npm publish -f
+
+.PHONY: test

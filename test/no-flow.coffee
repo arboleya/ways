@@ -1,10 +1,11 @@
-Router = require '../lib/ways'
+ways = require '../lib/ways'
 should = require('chai').should()
 
 describe '[no-flow-mode]', ->
 
   out = null
-  router = null
+  run = null
+  destroy = null
 
   before ->
 
@@ -13,12 +14,12 @@ describe '[no-flow-mode]', ->
     render = (req)->
       out?.log 'render', req
 
-    router = new Router
-    router.get '/', render
-    router.get '/pages', render
-    router.get '/pages/:id', render
-    router.get '/pages/:id/edit', render
-    router.get '/no/dep', render
+    ways.reset()
+    ways '/', render
+    ways '/pages', render
+    ways '/pages/:id', render
+    ways '/pages/:id/edit', render
+    ways '/no/dep', render
 
 
   it 'should execute routes in the order they are called', (done)->
@@ -38,9 +39,9 @@ describe '[no-flow-mode]', ->
         done()
 
     # replace shouldn't do anything
-    router.replace '/pages/33/edit'
+    ways.go.silent '/pages/33/edit'
 
-    router.push '/pages/33/edit'
-    router.push '/pages'
-    router.push '/pages/33'
-    router.push '/'
+    ways.go '/pages/33/edit'
+    ways.go '/pages'
+    ways.go '/pages/33'
+    ways.go '/'

@@ -23,7 +23,7 @@
     "node": ">= 0.10"
   },
   "dependencies": {
-    "happens": "0.3.x"
+    "happens": "0.4.x"
   },
   "devDependencies": {
     "chai": "1.8.x",

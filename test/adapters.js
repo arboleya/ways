@@ -3,7 +3,7 @@ var ways = require('../lib/ways'),
     should = require('chai').should();
 
 function Adapter() {
-  happens.mixin(this);
+  happens(this);
 }
 
 Adapter.prototype.url = null;

@@ -1,3 +1,7 @@
+0.3.1 / 2013-12-09
+===================
+ * Upgrading happens
+
 0.3.0 / 2013-12-08
 ===================
  * Removing coffeescript dependency and porting everything to javascript

@@ -1,3 +1,7 @@
+0.3.2 / 2013-12-09
+===================
+ * Fixing flow-interruption handling
+
 0.3.1 / 2013-12-09
 ===================
  * Upgrading happens

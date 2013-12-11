@@ -27,6 +27,7 @@ var browser = require('ways-browser');
 
 ways.use(browser);
 ways('/my/route', function(req){ /* ... */ });
+ways.init();
 ````
 
 ## Basics
@@ -52,6 +53,9 @@ ways('/pages/:id?/tags/*tags?', handler);
 
 // match-all
 ways('*', handler);
+
+// initialize
+ways.init();
 ````
 
 ### Go
@@ -176,7 +180,9 @@ Ok, now lets start our navigation:
 #### Step 1
 
 ````javascript
-ways.go('/pages/33/edit');
+// pretend current url is '/pages/33/edit'
+// init method will use it
+ways.init();
 ````
 
 This will produce the following output:

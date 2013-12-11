@@ -1,3 +1,7 @@
+0.3.3 / 2013-12-09
+===================
+ * Adding `init` method to keep initial state clean
+
 0.3.2 / 2013-12-09
 ===================
  * Fixing flow-interruption handling

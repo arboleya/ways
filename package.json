@@ -1,6 +1,6 @@
 {
   "name": "ways",
-  "version": "0.3.3",
+  "version": "0.3.4",
   "author": "Anderson Arboleya <anderson@arboleya.me>",
   "description": "Micro router with flow-based navigation mechanism and addapters support",
   "keywords": [
@@ -13,7 +13,7 @@
     "test": "make test"
   },
   "directories": {
-    "src": "./src"
+    "lib": "./lib"
   },
   "repository": {
     "type": "git",

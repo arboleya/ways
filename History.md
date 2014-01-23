@@ -1,3 +1,7 @@
+0.3.4 / 2014-01-23
+===================
+ * Fixing optional splat params parser
+
 0.3.3 / 2013-12-09
 ===================
  * Adding `init` method to keep initial state clean

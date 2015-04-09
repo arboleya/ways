@@ -22,7 +22,7 @@ describe('[flow-mode] run+destroy', function() {
     };
 
     ways.reset();
-    ways.mode('run+destroy');
+    ways.flow('run+destroy');
     ways('/', run, destroy);
     ways('/pages', run, destroy, '/');
     ways('/pages/:id', run, destroy, '/pages');

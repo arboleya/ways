@@ -22,7 +22,7 @@ describe('[match-all]', function() {
     };
     
     ways.reset();
-    ways.mode('destroy+run');
+    ways.flow('destroy+run');
     ways('/', run, destroy);
     ways('*', run, destroy, '/');
   });

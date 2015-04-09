@@ -32,7 +32,7 @@ describe('[flow-interruption] destroy+run', function() {
   it('should interrupt current flow and run new (run+destroy)', function(done){
     
     ways.reset();
-    ways.mode('destroy+run');
+    ways.flow('destroy+run');
     
     ways('/', run, destroy);
     ways('/pages', run, destroy, '/');
@@ -61,7 +61,7 @@ describe('[flow-interruption] destroy+run', function() {
   it('should interrupt current flow starts new (destroy+run)', function(done){
     
     ways.reset();
-    ways.mode('run+destroy');
+    ways.flow('run+destroy');
 
     ways('/', run, destroy);
     ways('/pages', run, destroy, '/');

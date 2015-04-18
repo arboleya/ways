@@ -1,35 +1,39 @@
 {
   "name": "ways",
-  "version": "0.3.4",
+  "description": "Micro router with flow-based navigation mechanism",
+  "version": "0.4.0",
   "author": "Anderson Arboleya <anderson@arboleya.me>",
-  "description": "Micro router with flow-based navigation mechanism and addapters support",
-  "keywords": [
-    "router",
-    "navigation",
-    "flow"
-  ],
-  "main": "./lib/ways",
-  "scripts": {
-    "test": "make test"
+  "dependencies": {
+    "happens": "0.6.0",
+    "ways-addressbar": "0.2.0"
   },
   "directories": {
     "lib": "./lib"
   },
-  "repository": {
-    "type": "git",
-    "url": "http://github.com/serpentem/ways"
-  },
   "engines": {
     "node": ">= 0.10"
   },
-  "dependencies": {
-    "happens": "0.4.x"
+  "keywords": [
+    "flow",
+    "navigation",
+    "router"
+  ],
+  "main": "./lib/ways",
+  "repository": {
+    "type": "git",
+    "url": "http://github.com/arboleya/ways"
+  },
+  "scripts": {
+    "test": "make test"
   },
   "devDependencies": {
-    "chai": "1.8.x",
-    "mocha": "1.14.x",
-    "mversion": "0.2.x",
-    "istanbul": "0.1.x",
-    "coveralls": "2.3.x"
+    "chai": "^2.2.0",
+    "codeclimate-test-reporter": "0.0.4",
+    "coveralls": "^2.11.2",
+    "istanbul": "^0.3.13",
+    "mocha": "^2.2.4",
+    "mversion": "^1.10.0",
+    "npm-check": "^3.2.10",
+    "spacejam": "^1.1.4"
   }
 }

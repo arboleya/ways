@@ -31,6 +31,13 @@ Adapter.prototype.replace = function(url, title, state) {
 describe('[adapters]', function() {
   it('should make proper use of adapters', function(done) {
     
+    var requests = [
+      {url: '/pages/33/edit', pattern: '/pages/:id/edit', params: {id: '33'}},
+      {url: '/pages', pattern: '/pages', params: {}},
+      {url: '/pages/33', pattern: '/pages/:id', params: {id: '33'}},
+      {url: '/', pattern: '/', params: {}}
+    ];
+
     var out = {
       log: function(type, req) {
         type.should.equal('run');
@@ -55,14 +62,7 @@ describe('[adapters]', function() {
     ways('/pages/:id/edit', run);
     ways('/no/dep', run);
     
-    requests = [
-      {url: '/pages/33/edit', pattern: '/pages/:id/edit', params: {id: '33'}},
-      {url: '/pages', pattern: '/pages', params: {}},
-      {url: '/pages/33', pattern: '/pages/:id', params: {id: '33'}},
-      {url: '/', pattern: '/', params: {}}
-    ];
-
-    ways.go.silent('/pages/33/edit');
+    ways.go.silent('/pages/33/edit'); // <- shouldn't do anything!
     ways.go('/pages/33/edit');
 
     should.exist(ways.pathname());

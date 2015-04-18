@@ -24,7 +24,7 @@ describe('[no-flow-mode]', function(){
 
   it('should execute routes in the order they are called', function(done) {
 
-    requests =  [
+    var requests =  [
       {url: '/pages/33/edit', pattern: '/pages/:id/edit', params: {id:'33'}},
       {url: '/pages', pattern: '/pages', params: {}},
       {url: '/pages/33', pattern: '/pages/:id', params: {id:'33'}},

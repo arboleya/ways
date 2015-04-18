@@ -19,6 +19,7 @@ Package.onUse(function(api) {
   api.addFiles('lib/way.js', 'client');
   api.addFiles('lib/flow.js', 'client');
   api.addFiles('lib/fluid.js', 'client');
+  api.addFiles('meteor.js', 'client');
   api.export('Ways', 'client');
 });
 

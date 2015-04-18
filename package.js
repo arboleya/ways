@@ -1,3 +1,5 @@
+var name = 'arboleya:ways';
+
 Package.describe({
   name: 'arboleya:ways',
   version: '1.0.0',
@@ -11,9 +13,18 @@ Package.describe({
 7
 Package.onUse(function(api) {
   api.versionsFrom('1.0');
-  api.addFiles('lib/meteor/ways.js', 'client');
-  api.addFiles('lib/meteor/way.js', 'client');
-  api.addFiles('lib/meteor/flow.js', 'client');
-  api.addFiles('lib/meteor/fluid.js', 'client');
+  api.use('arboleya:happens@0.6.0');
+  api.use('arboleya:ways-addressbar@0.2.0');
+  api.addFiles('lib/ways.js', 'client');
+  api.addFiles('lib/way.js', 'client');
+  api.addFiles('lib/flow.js', 'client');
+  api.addFiles('lib/fluid.js', 'client');
   api.export('Ways', 'client');
+});
+
+Package.onTest(function (api) {
+  api.use(name);
+  api.use('tinytest');
+  api.use('arboleya:ways', 'client');
+  api.addFiles('test/meteor.js');
 });

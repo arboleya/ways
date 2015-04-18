@@ -1,0 +1,36 @@
+{
+  "name": "ways",
+  "version": "0.4.0",
+  "homepage": "https://github.com/arboleya/ways",
+  "authors": [
+    "Anderson Arboleya <anderson@arboleya.me>"
+  ],
+  "description": "Fluid router specially designed for complex UI animations and page transitions",
+  "main": "lib/ways.js",
+  "moduleType": [
+    "amd",
+    "globals",
+    "node"
+  ],
+  "keywords": [
+    "router",
+    "flow",
+    "fluid",
+    "navigation",
+    "chain",
+    "transitions",
+    "spa"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "happens": "~0.6.0",
+    "ways-addressbar": "~0.2.0"
+  }
+}

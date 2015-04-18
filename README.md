@@ -1,33 +1,23 @@
-# Ways
-
-Micro router with [flow-based](#flow-mode) navigation mechanism and adapters support.
-
 [![Build Status](https://travis-ci.org/serpentem/ways.png?branch=master)](https://travis-ci.org/serpentem/ways)
 [![Coverage Status](https://coveralls.io/repos/serpentem/ways/badge.png)](https://coveralls.io/r/serpentem/ways)
 [![Dependency Status](https://gemnasium.com/serpentem/ways.png)](https://gemnasium.com/serpentem/ways)
 [![NPM version](https://badge.fury.io/js/ways.png)](http://badge.fury.io/js/ways)
 
+# Ways
+
+Micro router with [flow-based](#flow-mode) navigation mechanism.
+
 ## Installation
 
-````
-npm install ways --save-dev
-````
+````shell
+# node
+npm install ways # --save, --save-dev
 
-## Adapters
+# bower
+bower install ways # --save, --save-dev
 
-This router alone doesn't implement HTML5 History or Hash support, for browsers.
-
-Instead you may use adapters to expand it.
-
- * http://github.com/serpentem/ways-browser
-
-````javascript
-var ways = require('ways');
-var browser = require('ways-browser');
-
-ways.use(browser);
-ways('/my/route', function(req){ /* ... */ });
-ways.init();
+# meteor
+meteor add arboleya:ways
 ````
 
 ## Basics

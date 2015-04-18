@@ -2,12 +2,9 @@ var name = 'arboleya:ways';
 
 Package.describe({
   name: 'arboleya:ways',
-  version: '1.0.0',
-  summary: 'Micro router specially designed for complex UI animations and page transitions',
-  // URL to the Git repository containing the source code for this package.
-  git: 'https://github.com/serpentem/ways',
-  // By default, Meteor will default to using README.md for documentation.
-  // To avoid submitting documentation, set this field to null.
+  version: '0.4.0',
+  summary: 'Fluid router specially designed for complex UI animations and page transitions',
+  git: 'https://github.com/arboleya/ways',
   documentation: 'README.md'
 });
 7

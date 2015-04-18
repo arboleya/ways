@@ -1,12 +1,8 @@
 {
   "name": "ways",
-  "description": "Micro router with flow-based navigation mechanism",
   "version": "0.4.0",
+  "description": "Fluid router specially designed for complex UI animations and page transitions",
   "author": "Anderson Arboleya <anderson@arboleya.me>",
-  "dependencies": {
-    "happens": "0.6.0",
-    "ways-addressbar": "0.2.0"
-  },
   "directories": {
     "lib": "./lib"
   },
@@ -14,9 +10,13 @@
     "node": ">= 0.10"
   },
   "keywords": [
+    "router",
     "flow",
+    "fluid",
     "navigation",
-    "router"
+    "chain",
+    "transitions",
+    "spa"
   ],
   "main": "./lib/ways",
   "repository": {
@@ -25,6 +25,10 @@
   },
   "scripts": {
     "test": "make test"
+  },
+  "dependencies": {
+    "happens": "0.6.0",
+    "ways-addressbar": "0.2.0"
   },
   "devDependencies": {
     "chai": "^2.2.0",

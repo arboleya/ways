@@ -28,7 +28,7 @@
   },
   "dependencies": {
     "happens": "0.6.0",
-    "ways-addressbar": "0.2.0"
+    "ways-addressbar": "^0.2.1"
   },
   "devDependencies": {
     "chai": "^2.2.0",
@@ -38,6 +38,6 @@
     "mocha": "^2.2.4",
     "mversion": "^1.10.0",
     "npm-check": "^3.2.10",
-    "spacejam": "^1.1.4"
+    "spacejam": "^1.2.0"
   }
 }

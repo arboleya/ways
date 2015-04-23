@@ -31,6 +31,6 @@
   ],
   "dependencies": {
     "happens": "~0.6.0",
-    "ways-addressbar": "~0.2.0"
+    "ways-addressbar": "~0.2.1"
   }
 }

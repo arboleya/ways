@@ -1,3 +1,9 @@
+0.4.0 / 2015-04-23
+===================
+ * Refactoring everything
+ * Adding Meteor support
+ * Adding Bower support
+
 0.3.4 / 2014-01-23
 ===================
  * Fixing optional splat params parser

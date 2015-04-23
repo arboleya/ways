@@ -1,7 +1,7 @@
 {
   "name": "ways",
   "version": "0.4.0",
-  "description": "Fluid router specially designed for complex UI animations and page transitions",
+  "description": "Fluid router specially designed for complex page transitions and granular UI animations",
   "author": "Anderson Arboleya <anderson@arboleya.me>",
   "directories": {
     "lib": "./lib"

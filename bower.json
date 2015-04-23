@@ -5,7 +5,7 @@
   "authors": [
     "Anderson Arboleya <anderson@arboleya.me>"
   ],
-  "description": "Fluid router specially designed for complex UI animations and page transitions",
+  "description": "Fluid router specially designed for complex page transitions and granular UI animations",
   "main": "lib/ways.js",
   "moduleType": [
     "amd",

@@ -1,6 +1,6 @@
 [![Build Status](https://travis-ci.org/arboleya/ways.svg)](https://travis-ci.org/arboleya/ways)
-[![Coverage Status](https://coveralls.io/repos/arboleya/ways/badge.svg)](https://coveralls.io/r/arboleya/ways)
-[![Code Climate](https://codeclimate.com/repos/553294cfe30ba06de9003489/badges/7cba522892605b32602c/gpa.svg)](https://codeclimate.com/repos/553294cfe30ba06de9003489/feed)
+[![Coverage Status](https://coveralls.io/repos/arboleya/ways/badge.svg?branch=master)](https://coveralls.io/r/arboleya/ways?branch=master)
+[![Code Climate](https://codeclimate.com/repos/553a5f77e30ba071310005d5/badges/b23591a0ab4283258afd/gpa.svg)](https://codeclimate.com/repos/553a5f77e30ba071310005d5/feed)
 [![Dependency Status](https://gemnasium.com/arboleya/ways.svg)](https://gemnasium.com/arboleya/ways)
 
 [![Sauce Test Status](https://saucelabs.com/browser-matrix/ways-addressbar.svg?auth=fbb31316b6b3b70a62d6697c4ce14da3)](https://saucelabs.com/u/ways)

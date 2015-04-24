@@ -1,11 +1,33 @@
-[![Build Status](https://travis-ci.org/serpentem/ways.png?branch=master)](https://travis-ci.org/serpentem/ways)
-[![Coverage Status](https://coveralls.io/repos/serpentem/ways/badge.png)](https://coveralls.io/r/serpentem/ways)
-[![Dependency Status](https://gemnasium.com/serpentem/ways.png)](https://gemnasium.com/serpentem/ways)
-[![NPM version](https://badge.fury.io/js/ways.png)](http://badge.fury.io/js/ways)
+[![Build Status](https://travis-ci.org/arboleya/ways.svg)](https://travis-ci.org/arboleya/ways)
+[![Coverage Status](https://coveralls.io/repos/arboleya/ways/badge.svg)](https://coveralls.io/r/arboleya/ways)
+[![Code Climate](https://codeclimate.com/repos/553294cfe30ba06de9003489/badges/7cba522892605b32602c/gpa.svg)](https://codeclimate.com/repos/553294cfe30ba06de9003489/feed)
+[![Dependency Status](https://gemnasium.com/arboleya/ways.svg)](https://gemnasium.com/arboleya/ways)
+
+[![Sauce Test Status](https://saucelabs.com/browser-matrix/ways-addressbar.svg?auth=fbb31316b6b3b70a62d6697c4ce14da3)](https://saucelabs.com/u/ways)
 
 # Ways
 
-Micro router with [flow-based](#flow-mode) navigation mechanism.
+Fluid router specially designed for [complex page transitions](#flow-mode)
+and [granular UI animations](#flow-mode).
+
+But not only that.
+
+
+  - [Installation](#installation)
+  - [Basics](#basics)
+    - [AddressBar](#addressbar)
+    - [Go](#go)
+    - [Go Silent](#go-silent)
+    - [Pathname](#pathname)
+  - [Flow mode](#flow-mode)
+    - [Activation](#activation)
+    - [Signature changes](#signature-changes)
+    - [Example](#example)
+      - [Step 1](#step-1)
+      - [Step 2](#step-2)
+      - [Step 3](#step-3)
+    - [Restricted urls](#restricted-urls)
+
 
 ## Installation
 
@@ -17,11 +39,14 @@ npm install ways # --save, --save-dev
 bower install ways # --save, --save-dev
 
 # meteor
-meteor add arboleya:ways
+meteor add arboleya:ways # <- Ways is exported with a **capital** W!
 ````
 
 ## Basics
+
 Basic signature is `ways(pattern, handler)`.
+
+> In **Meteor**, consider `Ways` is exported with a capital `W`.
 
 ````javascript
 var ways = require('ways');
@@ -44,9 +69,25 @@ ways('/pages/:id?/tags/*tags?', handler);
 // match-all
 ways('*', handler);
 
-// initialize
-ways.init();
+// initialize with current url
+ways.go(ways.pathname());
 ````
+
+### AddressBar
+
+By default `Ways` doesn't offers support for `/pushState` and `#hash`, there's
+no browser dependency whatsoever. Therefore you can use it  wherever you want
+to, even on the server. Or keep in the client, but without affecting urls.
+
+However, sometimes you'll want to activate addressbar support, like this:
+
+````javascript
+// activate addressbar support
+ways.use(ways.addressbar);
+````
+
+And you're done.
+
 
 ### Go
 
@@ -74,7 +115,7 @@ ways.go.silent('/pages', 'Page Title', {foo: 'bar'});
 Gets current pathname.
 
 ```javascript
-// window.pathname()
+// ways.pathname();
 ways.go(ways.pathname());
 ````
  
@@ -85,9 +126,9 @@ Connect your routes altogheter, creating a dependency graph between them.
 Lets say you have three routes:
 
 ````javascript
-ways('/page/', function (req) { /* ... */ });
-ways('/page/sidebar', function (req) { /* ... */ });
-ways('/page/', function (req) { /* ... */ });
+ways('/a', function (req) { /* ... */ });
+ways('/b', function (req) { /* ... */ });
+ways('/c', function (req) { /* ... */ });
 ````
 
 Now lets assume that `/c` depends on `/b` that depends on `/a`.
@@ -97,40 +138,59 @@ So when we call `/c`, we really want to execute:
   1. Then `/b`
   1. And finally `/c`
 
-That's what flow based mode do.
+That's what flow based mode would do for you:
+
+ * Routes' execution occurs asynchronously and sequentially
+ * Dependency chain is computed automatically, no more routes' hell
+ * Pack your projects with granular UI animations and complex page transitions
+ * Forget the `Layout <- View` paradigm, embrace the `View <-> View` reality
+
+> TODO: Maybe explain wtf is `View <-> View`
+
 
 ### Activation
 
 The passed mode tell the order things should run.
 
 ```javascript
-// ways.mode(mode);
-ways.mode('destroy+run'); // destroy first, run after
-ways.mode('run+destroy'); // run before, destroy after
+// ways.flow(mode);
+ways.flow('destroy+run'); // destroy first, run after
+ways.flow('run+destroy'); // run before, destroy after
 ````
+
+Don't panic, continue reading.
 
 ### Signature changes
 
-In `flow`, the routes can be run or destroyed and signature changes a little.
-  
-You must pass two handlers instead of one, a `runner` and a `destroyer`.
+In `flow` mode, the routes can be run or destroyed and signature changes a
+little. You must pass two handlers instead of one: a `runner` and a `destroyer`.
 
-You may also pass a `dependency`.
+Optionally, you may also (*most probably*) pass a `dependency`.
 
 
 ````javascript
 // ways(pattern, run, destroy, [dependency])
 
 var ways = require('ways');
-var pages = require('./pages');
 
-ways('/', pages.base, pages.destroy);
+ways.flow('destroy+run');
 
-// 'pages/:id' depends on '/'
-ways('/pages/:id', pages.show, pages.destroy, '/');
+function run(req, done){
+  console.log('rendering', req);
+  done();
+}
 
-// '/pages/:id/edit' depends on '/pages/:id'
-ways('/pages/:id/edit', pages.edit, pages.destroy, '/pages/:id');
+function destroy(req, done){
+  console.log('destroying', req);
+  done();
+}
+
+ways('/', run, destroy);
+ways('/pages/:id', run, destroy, '/'); // [1]
+ways('/pages/:id/edit', run, destroy, '/pages/:id'); // [2]
+
+// [1] 'pages/:id' depends on '/'
+// [2] '/pages/:id/edit' depends on '/pages/:id'
 ````
 
 Both handlers (`run` and `destroy`) will receive two params when called:
@@ -144,6 +204,8 @@ Lets take a look at a full example:
 
 ````javascript
 var ways = require('ways');
+
+ways.flow('destroy+run');
 
 var running = '+ RUN url=%s, pattern=%s, params='
 var destroying = '- DESTROY url=%s, pattern=%s, params='
@@ -162,7 +224,7 @@ ways('/', run, destroy);
 ways('/pages', run, destroy, '/');
 ways('/pages/:id', run, destroy, '/pages');
 ways('/pages/:id/edit', run, destroy, '/pages/:id');
-ways('*', run, destroy);
+ways('*', run, destroy); // <- this is a catch all
 ````
 
 Ok, now lets start our navigation:
@@ -170,9 +232,10 @@ Ok, now lets start our navigation:
 #### Step 1
 
 ````javascript
-// pretend current url is '/pages/33/edit'
-// init method will use it
-ways.init();
+// pretend our firt and current url is '/pages/33/edit',
+// we'll use `ways.pathname()` to get it
+
+ways.go(ways.pathname());
 ````
 
 This will produce the following output:
@@ -184,7 +247,7 @@ This will produce the following output:
 + RUN url='/pages/33/edit', pattern='/pages/:id/edit', params= Object {id: "33"} 
 ````
 > At the beggining there's no route to be destroyed, so the dependency chain is
-> computed and every route gets executed
+> computed and every route gets executed, one after another, asynchronously.
 
 #### Step 2
 
@@ -203,8 +266,8 @@ This will produce the following output:
 
 > Here we have two routes being destroyed before running the new ones, this is
 > computed again based on the dependency chain. In this case, useless routes are
-> `destroyed` before running the new ones, this order can be changed passing the
-> mode `destroy+run`.
+> `destroyed` before running the new ones, the opposite is achieved by passing
+> the mode `run+destroy`.
 
 #### Step 3
 
@@ -231,22 +294,23 @@ This will produce the following output:
 A simple way to have restricted urls would be like:
 
 ````javascript
-function auth(){
+function auth(done){
   // your logic here
-  return true;
+  done(true);
 }
-function restrict(next) {
+
+function restrict(action) {
   return function(req, done) {
     auth(function(authorized) {
       if(!authorized)
         ways.go('/login');
       else
-        next(req, done);
+        action(req, done);
     });
   }
 }
 
-ways('/pages/secret', restrict(pages.secret), pages.destroy)
+ways('/pages/secret', restrict(run), destroy)
 ````
 
 # License
@@ -271,5 +335,3 @@ FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR
 COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER
 IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
 CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
-
-[![Bitdeli Badge](https://d2weczhvl823v0.cloudfront.net/serpentem/ways/trend.png)](https://bitdeli.com/free "Bitdeli Badge")

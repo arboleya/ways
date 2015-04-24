@@ -1,6 +1,22 @@
----
+env:
+  global:
+    # COVERALLS_REPO_TOKEN
+    - secure: "e90Xq9tu1ZmKZXqtAMMaK/bkDLFTEVzyKaOaWfic4Bx1RfwsMPAfjS6XVZrACgaEq0QzXVzMkrZaTH/y1Rn7xYsg+iwV9ceE1T75kPcfcGERll/KGcDPBnhAD4dPGl0AsUdHEo74fzGmQD2R6028fewm/gOCMJfz2DT5Bg5PM8U="
+
+    # CODECLIMATE_REPO_TOKEN
+    - secure: "HbYQcNULTgjqLjx+ZO0E46VX2s2F0KwW+1jLJTEgevUSkQYk0XPr6jyDPDE+qUeN+Vr0U9MQXUhOYq8nbVFsRcXczODc5I4vipMiK9RRP3v6czM5jd07JYd5i3M4VlX8po4psTuBDL7tz2cRdilsj7t1VKuyWK8HVnVpxCMVhbI="
+
 language: node_js
 
-node_js: 0.1
+node_js:
+  - iojs
+  - 0.10.36
+  - 0.12
 
-script: make test.coverage.coveralls
+install:
+  - npm install
+  - curl https://install.meteor.com | /bin/sh
+
+script:
+  - make test.coverage.coveralls
+  - make test.meteor.headless

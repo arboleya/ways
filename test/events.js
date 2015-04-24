@@ -3,7 +3,6 @@ var should = require('chai').should();
 
 describe('[events]', function(){
 
-
   before(function(){
     ways.reset();
     ways('/pages', function(){});

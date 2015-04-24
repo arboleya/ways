@@ -28,7 +28,6 @@ But not only that.
       - [Step 3](#step-3)
     - [Restricted urls](#restricted-urls)
 
-
 ## Installation
 
 ````shell
@@ -134,11 +133,14 @@ ways('/c', function (req) { /* ... */ });
 Now lets assume that `/c` depends on `/b` that depends on `/a`.
 
 So when we call `/c`, we really want to execute:
+
   1. First `/a`
   1. Then `/b`
   1. And finally `/c`
 
-That's what flow based mode would do for you:
+That's what flow based mode would do for you.
+
+And more:
 
  * Routes' execution occurs asynchronously and sequentially
  * Dependency chain is computed automatically, no more routes' hell

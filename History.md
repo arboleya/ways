@@ -1,4 +1,4 @@
-0.4.0 / 2015-04-23
+0.4.0 / 2015-04-24
 ===================
  * Refactoring everything
  * Adding Meteor support

@@ -26,7 +26,9 @@ But not only that.
       - [Step 1](#step-1)
       - [Step 2](#step-2)
       - [Step 3](#step-3)
-    - [Restricted urls](#restricted-urls)
+  - [Events](#events)
+  - [Restricted urls](#restricted-urls)
+
 
 ## Installation
 
@@ -291,7 +293,17 @@ This will produce the following output:
 > needs to be destroyed before it runs.
 
 
-### Restricted urls
+## Events
+
+There's only one global event you can listen to.
+
+````javascript
+ways.on('url:change', function(url){
+  console.log('current url is', url);
+});
+````
+
+## Restricted urls
 
 A simple way to have restricted urls would be like:
 

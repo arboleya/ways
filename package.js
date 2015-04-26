@@ -2,7 +2,7 @@ var name = 'arboleya:ways';
 
 Package.describe({
   name: name,
-  version: '0.4.0',
+  version: '0.5.0',
   summary: 'Fluid router specially designed for complex page transitions and granular UI animations',
   git: 'https://github.com/arboleya/ways',
   documentation: 'README.md'

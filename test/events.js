@@ -22,7 +22,7 @@ describe('[events]', function(){
 
   it('should not dispatch event after listener is removed', function(done) {
     url_changed = 'none';
-    ways.off('url:change');
+    ways.off('url:change', url_change);
     ways.go('/pages');
     url_changed.should.equal('none');
     done();

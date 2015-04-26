@@ -1,3 +1,8 @@
+0.5.0 / 2015-04-25
+===================
+ * Adding `url:change` event
+ * Providing `pathname` even if `addressbar` plugin is not enabled
+
 0.4.0 / 2015-04-24
 ===================
  * Refactoring everything
